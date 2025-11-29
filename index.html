@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>cn布乖导航页</title>
+    <style>
+        /* 基础样式和背景 */
+        body {
+            font-family: -apple-system, blinkmacsystemfont, "segoe ui", roboto, "helvetica neue", arial, sans-serif;
+            background-color: #f0f0f0; /* 浅色主题背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://pbs.twimg.com/media/G4T7ra3asAQnCtQ?format=jpg&name=small'); /* 默认背景图 */
+            background-size: cover;
+            background-position: center;
+            transition: background-color 0.3s ease, background-image 0.3s ease; /* 添加背景图片过渡 */
+            color: #333;
+            position: relative; /* 用于背景叠加层 */
+        }
+        
+        /* 背景叠加层，模拟第二个代码中的 bg-gradient-to-b from-black/10 to-black/40 */
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: -1; /* 确保在背景图片之上但在内容之下 */
+        }
+
+        /* 深色主题样式 */
+        body.dark-theme {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        
+        /* 深色主题下的背景叠加层 */
+        body.dark-theme::before {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        /* ---------------------------------------------------- */
+        /* --- 液态玻璃效果核心样式 (根据主题色调整透明度和边框) --- */
+        /* ---------------------------------------------------- */
+
+        /* 浅色主题下的玻璃效果 */
+        .glass-effect {
+            background-color: rgba(255, 255, 255, 0.2); /* 浅色模式下更低的透明度，与背景融合 */
+            backdrop-filter: blur(15px) saturate(1.2); /* 稍微增加模糊度 */
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3); /* 更柔和的白色边框 */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15); /* 更自然的阴影 */
+            transition: all 0.3s ease;
+        }
+
+        /* 深色主题下的玻璃效果 */
+        body.dark-theme .glass-effect {
+            background-color: rgba(28, 28, 30, 0.4); /* 深色模式下稍高的透明度，保持可见性 */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* 浅色边框，与深色背景形成微妙对比 */
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4); /* 更深的阴影 */
+        }
+
+        /* 模拟卡片样式的主容器 (应用玻璃效果) */
+        .container {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            /* 应用玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.2); /* 浅色模式初始透明度 */
+            backdrop-filter: blur(15px) saturate(1.2); 
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        /* 深色主题下的容器 */
+        body.dark-theme .container {
+            background-color: rgba(28, 28, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        /* 头部用户信息区 */
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px; 
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.5); /* 边框与玻璃效果协调 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            margin-right: 15px;
+            transition: border-color 0.3s ease;
+            cursor: pointer; 
+        }
+
+        body.dark-theme .avatar {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info h1 {
+            font-size: 1.4rem; 
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #ffffff; /* 标题颜色固定为纯白色 */
+        }
+
+        .info p {
+            font-size: 0.9rem;
+            color: #e0e0e0; /* 颜色设置为浅白色，固定不变 */
+            margin: 0;
+            transition: color 0.3s ease;
+            text-indent: 1em;
+        }
+
+        body.dark-theme .info p {
+            color: #ffffff; /* 确保深色主题下也保持纯白色 (#ffffff) */
+        }
+
+        /* 标签/关键词区 (应用玻璃效果) */
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            /* 应用玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(15px) saturate(1.2); 
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            
+            color: #e0e0e0; 
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .tag {
+            background-color: rgba(28, 28, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+        }
+
+        /* 搜索输入框 (应用玻璃效果) */
+        .search-box {
+            display: flex;
+            align-items: center;
+            /* 恢复为圆角矩形 */
+            border-radius: 12px; 
+            /* 保持较低的高度 */
+            padding: 8px 15px; 
+            
+            /* 应用玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.2); 
+            backdrop-filter: blur(15px) saturate(1.2); 
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .search-box {
+            background-color: rgba(28, 28, 30, 0.4); 
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .search-box input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: #e0e0e0; 
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #bbb; 
+            transition: color 0.3s ease;
+        }
+        body.dark-theme .search-box input::placeholder {
+            color: #aaa;
+        }
+        
+        .search-form {
+            margin-bottom: 20px;
+        }
+
+
+        /* 网格内容区 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        /* 让 a 标签填充满 grid-item */
+        .grid-item a {
+            text-decoration: none; 
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            /* 保持向右微移后的内边距 10px */
+            padding: 0 10px; 
+            gap: 10px;
+            color: inherit;
+        }
+        
+        .grid-item {
+            height: 80px; 
+            border-radius: 12px;
+            display: flex; 
+            justify-content: flex-start;
+            align-items: center;
+            cursor: pointer;
+            color: #e0e0e0; 
+            font-size: 0.9rem;
+            /* 应用玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px) saturate(1.2); 
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        /* 悬停效果 */
+        .grid-item:hover, .grid-item-full:hover, .icon-row .icon:hover, .tag:hover {
+            transform: translateY(-2px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); /* 悬停阴影更明显 */
+        }
+
+
+        /* --- 图片容器样式 --- */
+        .grid-item-image {
+            width: 60px; 
+            height: 60px;
+            border-radius: 8px; 
+            overflow: hidden;
+            flex-shrink: 0; 
+        }
+        
+        .grid-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        
+        /* --- 右侧文本内容样式 --- */
+        .grid-item-content {
+            flex-grow: 1;
+            text-align: left; 
+            font-weight: 600;
+        }
+
+
+        /* *** 占满两列的长卡片样式 (轮播容器) *** */
+        .grid-item-full {
+            grid-column: span 2; 
+            aspect-ratio: 4 / 3; 
+            height: auto; 
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e0e0e0; 
+            font-size: 1rem;
+            /* 应用玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px) saturate(1.2); 
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            
+            /* 轮播关键：设置为相对定位，让内部图片绝对定位 */
+            position: relative;
+            padding: 0; /* 移除内边距以让图片占满 */
+            overflow: hidden; /* 隐藏超出容器的图片 */
+        }
+
+        /* 深色主题下的通用卡片样式 */
+        body.dark-theme .grid-item,
+        body.dark-theme .grid-item-full {
+            background-color: rgba(28, 28, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+        }
+        
+        /* --- 轮播图片样式 --- */
+        .carousel-item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0; /* 默认隐藏所有图片 */
+            transition: opacity 1s ease-in-out; /* 1秒淡入淡出效果 */
+        }
+
+        .carousel-item.active {
+            opacity: 1; /* 当前活动图片显示 */
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 确保图片覆盖整个卡片区域 */
+            border-radius: 12px; /* 继承卡片圆角 */
+            display: block;
+        }
+        
+        /* 轮播导航点（您要求隐藏，因此不需要样式） */
+        .carousel-nav {
+            display: none; /* 隐藏所有导航元素，包括小点点 */
+        }
+
+        /* 右侧浮动图标区 (应用玻璃效果) */
+        .icon-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            position: absolute;
+            top: 10px; 
+            right: 15px; /* 从 20px 更改为 15px，向右微移 */
+            z-index: 10;
+        }
+
+        .icon-row .icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #e0e0e0; 
+            font-size: 1.2rem;
+            cursor: pointer;
+            /* 应用玻璃效果 */
+            background-color: rgba(255, 255, 255, 0.25); /* 图标可以稍微亮一点 */
+            backdrop-filter: blur(10px); /* 图标模糊度稍低 */
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        body.dark-theme .icon-row .icon {
+            background-color: rgba(0, 0, 0, 0.5); /* 深色模式下图标透明度稍高 */
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            color: #e0e0e0;
+        }
+
+        /* 底部信息样式 */
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2); /* 分割线与玻璃效果协调 */
+            transition: border-top 0.3s ease;
+        }
+
+        body.dark-theme .footer {
+            border-top: 1px solid rgba(0, 0, 0, 0.2); 
+        }
+
+        .footer p {
+            font-size: 0.8rem;
+            color: #e0e0e0; 
+            transition: color 0.3s ease;
+        }
+
+        body.dark-theme .footer p {
+            color: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+
+    <input type="file" id="bgfileinput" accept="image/*" style="display: none;">
+    
+    <div class="container">
+        <div class="icon-row">
+            
+            <div class="icon" id="changebgimage"><span class="icon-placeholder">🖼️</span></div>
+            
+            <div class="icon" id="themetoggle"><span class="icon-placeholder">☀️</span></div>
+        </div>
+
+        <div class="header">
+            <div class="avatar">
+                <img id="avatarimage" src="Image_1762298308048.jpg" alt="头像" title="布乖furry的头像">
+            </div>
+            <div class="info">
+                <h1>布乖Furry</h1>
+                <p>你好，我是一名热爱分享兽圈文化与创意短视频的创作者</p>
+            </div>
+        </div>
+
+        <div class="tags">
+            <div class="tag">兽圈视频创作者</div>
+            <div class="tag">剪辑与设计获奖者</div>
+        </div>
+
+        <form action="https://www.bing.com/search" method="get" class="search-form">
+            <div class="search-box">
+                <span class="icon-placeholder">🔍</span>
+                <input type="text" name="q" placeholder="请输入文本搜索..." aria-label="必应搜索框">
+            </div>
+        </form>
+        <div class="content-grid">
+            
+            <div class="grid-item" data-card-id="1">
+                <a href="https://new.502fakw.com/shop/dh7lclbo" target="_blank">
+                    <div class="grid-item-image">
+                        <img id="cardimage1" src="https://i.postimg.cc/wvVBmpPt/536-536.gif" alt="卡片图片 1">
+                    </div>
+                    <div class="grid-item-content">布乖店铺</div>
+                </a>
+            </div>
+            
+            <div class="grid-item" data-card-id="2">
+                <a href="https://www.common-link.com" target="_blank">
+                    <div class="grid-item-image">
+                        <img id="cardimage2" src="https://i.postimg.cc/QCwKHSLN/511-511.gif" alt="卡片图片 2">
+                    </div>
+                    <div class="grid-item-content">关注我们</div>
+                </a>
+            </div>
+            
+            <div class="grid-item" data-card-id="3">
+                <a href="https://www.common-link.com" target="_blank">
+                    <div class="grid-item-image">
+                        <img id="cardimage3" src="https://via.placeholder.com/60x60/98fb98/000000?text=link" alt="卡片图片 3">
+                    </div>
+                    <div class="grid-item-content">纯文本 3</div>
+                </a>
+            </div>
+            
+            <div class="grid-item" data-card-id="4">
+                <a href="http://slither.io/" target="_blank">
+                    <div class="grid-item-image">
+                        <img id="cardimage4" src="https://i.postimg.cc/kXW4dWM6/IMG-20251129-145759.png" alt="卡片图片 4">
+                    </div>
+                    <div class="grid-item-content">游戏</div>
+                </a>
+            </div>
+            
+            <div class="grid-item-full" id="imageCarousel">
+                
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://i.postimg.cc/t48TWDgJ/20251129-075548.jpg" alt="轮播图 1">
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="https://pbs.twimg.com/media/GHXf216bMAAzF-U?format=jpg&name=small" alt="轮播图 2">
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="https://via.placeholder.com/600x450/20b2aa/000000?text=Image+3+(PNG)" alt="轮播图 3">
+                    </div>
+                    
+                    </div>
+                
+                </div>
+            
+        </div>
+        
+        
+    </div>
+  
+    <script>
+        // 获取所有需要的 dom 元素
+        const body = document.body;
+        const themetoggle = document.getElementById('themetoggle');
+        const changebgimage = document.getElementById('changebgimage');
+        const avatarimage = document.getElementById('avatarimage');
+        const bgfileinput = document.getElementById('bgfileinput'); 
+        const carousel = document.getElementById('imageCarousel');
+        let carouselItems = [];
+        let slideIndex = 0;
+        let slideInterval;
+        
+        // 头像图片数组 (点击头像循环切换)
+        const avatarImages = [
+            'Image_1762298308048.jpg', // 默认头像已修改为本地文件
+            'https://via.placeholder.com/70x70/ffc0cb/000000?text=puppy', // 粉色
+            'https://via.placeholder.com/70x70/add8e6/000000?text=kitten', // 蓝色
+            'https://via.placeholder.com/70x70/90ee90/000000?text=fox', // 绿色
+            'https://via.placeholder.com/70x70/ffa07a/000000?text=tiger', // 橘色
+        ];
+        let currentAvatarIndex = 0;
+        
+        // --- 1. 深浅主题切换功能 ---
+        themetoggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            // 切换图标
+            if (body.classList.contains('dark-theme')) {
+                themetoggle.querySelector('.icon-placeholder').textContent = '🌙';
+            } else {
+                themetoggle.querySelector('.icon-placeholder').textContent = '☀️';
+            }
+        });
+
+        // --- 2. 更换背景图片功能 (通过文件选择器实现相册跳转) ---
+        changebgimage.addEventListener('click', () => {
+            bgfileinput.click();
+        });
+
+        // 监听文件输入框选择文件后的事件
+        bgfileinput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    body.style.backgroundImage = `url('${e.target.result}')`;
+                };
+
+                reader.readAsDataURL(file);
+            } else if (file) {
+                 alert('您选择的不是一个有效的图片文件。');
+            }
+            event.target.value = null;
+        });
+
+
+        // --- 3. 头像图片循环更换功能 ---
+        avatarimage.addEventListener('click', () => {
+            currentAvatarIndex = (currentAvatarIndex + 1) % avatarImages.length;
+            avatarimage.src = avatarImages[currentAvatarIndex];
+        });
+        
+        // --- 4. 轮播功能逻辑 ---
+        function showSlides() {
+            // 如果轮播项目未初始化，则获取它们
+            if (carouselItems.length === 0 && carousel) {
+                carouselItems = carousel.querySelectorAll('.carousel-item');
+                if (carouselItems.length === 0) return; // 没有图片则退出
+            }
+
+            // 隐藏所有图片
+            carouselItems.forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // 确保索引循环
+            if (slideIndex >= carouselItems.length) {
+                slideIndex = 0;
+            }
+
+            // 显示当前图片
+            carouselItems[slideIndex].classList.add('active');
+            
+            // 准备下一张图片
+            slideIndex++;
+        }
+
+        // 初始化并启动轮播
+        if (carousel) {
+            // 立即显示第一张图
+            showSlides(); 
+            // 每 3000 毫秒（3 秒）切换一次
+            slideInterval = setInterval(showSlides, 3000); 
+        }
+        
+    </script>
+
+</body>
+</html>
