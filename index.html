@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的个人简介 - [你的姓名]</title>
+    <style>
+        /* 1. 全局样式 */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f9; /* 浅灰背景 */
+            color: #333; /* 深色文本 */
+        }
+
+        /* 2. 容器样式 */
+        .container {
+            max-width: 800px; /* 最大宽度 */
+            margin: 0 auto; /* 居中 */
+            background: #fff; /* 白色内容区背景 */
+            padding: 30px;
+            border-radius: 10px; /* 圆角 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 轻微阴影 */
+        }
+
+        /* 3. 头部/头像样式 */
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee; /* 分隔线 */
+        }
+
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%; /* 圆形头像 */
+            object-fit: cover; /* 确保图片不变形 */
+            border: 4px solid #4CAF50; /* 绿色边框 */
+            margin-bottom: 15px;
+        }
+
+        .header h1 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 2em;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1em;
+        }
+
+        /* 4. 内容区样式 */
+        .section {
+            margin-bottom: 25px;
+        }
+
+        .section h2 {
+            color: #4CAF50; /* 绿色标题 */
+            border-left: 5px solid #4CAF50;
+            padding-left: 10px;
+            margin-bottom: 15px;
+        }
+
+        .section ul {
+            list-style: none; /* 移除列表点 */
+            padding-left: 0;
+        }
+
+        .section li {
+            background: #ecf0f1; /* 浅背景 */
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* 5. 链接样式 */
+        .contact a {
+            color: #4CAF50;
+            text-decoration: none;
+            margin-right: 15px;
+        }
+
+        .contact a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <header class="header">
+            <img src="Image_1764419897800.jpg" alt="个人头像" class="avatar">
+            <h1>[你的姓名或昵称]</h1>
+            <p>👋 [你的职业/身份，例如：一位热衷于前端开发的工程师]</p>
+        </header>
+
+        <section class="section">
+            <h2>📝 关于我</h2>
+            <p>
+                [在这里写一段简短的自我介绍。]
+                例如：我是一个充满好奇心和求知欲的人，专注于将创意转化为实际的解决方案。我对新技术充满热情，并享受在团队合作中解决复杂问题的过程。
+            </p>
+        </section>
+
+        <section class="section">
+            <h2>🛠 技能与兴趣</h2>
+            <ul>
+                <li>**专业技能：** [技能1，例如：Python编程]、[技能2，例如：数据分析]、[技能3，例如：Web设计]</li>
+                <li>**语言：** [语言1，例如：中文(母语)]、[语言2，例如：英文(流利)]</li>
+                <li>**兴趣爱好：** [兴趣1，例如：摄影]、[兴趣2，例如：徒步旅行]、[兴趣3，例如：阅读科幻小说]</li>
+            </ul>
+        </section>
+
+        <section class="section">
+            <h2>📞 联系方式</h2>
+            <p class="contact">
+                邮箱：<a href="mailto:your_email@example.com">your_email@example.com</a> <br>
+                GitHub/作品集：<a href="[你的作品集链接]" target="_blank">[你的作品集名称]</a> <br>
+                社交媒体：<a href="[你的社交媒体链接]" target="_blank">[平台名称]</a>
+            </p>
+        </section>
+
+    </div>
+
+</body>
+</html>
