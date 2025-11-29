@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="zh">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CN布乖导航页</title>
+    <style>
+        /* 基础样式和背景 */
+        body {
+            font-family: -apple-system, blinkmacsystemfont, "segoe ui", roboto, "helvetica neue", arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://pbs.twimg.com/media/G4T7ra3asAQnCtQ?format=jpg&name=small');
+            background-size: cover;
+            background-position: center;
+            transition: background-color 0.3s ease, background-image 0.3s ease;
+            color: #333;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.4) 100%);
+            z-index: -1;
+        }
+
+        body.dark-theme {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        
+        body.dark-theme::before {
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+        }
+
+        /* 浅色主题玻璃效果 */
+        .glass-effect {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px) saturate(1.2);
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .glass-effect {
+            background-color: rgba(28, 28, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 400px;
+            border-radius: 20px;
+            padding: 20px;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px) saturate(1.2);
+            -webkit-backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        body.dark-theme .container {
+            background-color: rgba(28, 28, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+            margin-right: 15px;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        body.dark-theme .avatar {
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .info h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin: 0 0 5px 0;
+            color: #ffffff;
+        }
+
+        .info p {
+            font-size: 0.9rem;
+            color: #e0e0e0;
+            margin: 0;
+            transition: color 0.3s ease;
+            text-indent: 1em;
+        }
+
+        body.dark-theme .info p {
+            color: #ffffff;
+        }
+
+        .tags {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tag {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px) saturate(1.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .tag {
+            background-color: rgba(28, 28, 30, 0.4);
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+            border-radius: 12px;
+            padding: 8px 15px;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin-bottom: 20px;
+        }
+
+        body.dark-theme .search-box {
+            background-color: rgba(28, 28, 30, 0.4);
+        }
+
+        .search-box input {
+            flex-grow: 1;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: #e0e0e0;
+            outline: none;
+        }
+
+        .search-box input::placeholder {
+            color: #bbb;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .grid-item a {
+            text-decoration: none;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            padding: 0 10px;
+            gap: 10px;
+            color: inherit;
+        }
+        
+        .grid-item {
+            height: 80px;
+            border-radius: 12px;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            cursor: pointer;
+            color: #e0e0e0;
+            font-size: 0.9rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .grid-item {
+            background-color: rgba(28, 28, 30, 0.4);
+        }
+
+        .grid-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .grid-item-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px; 
+            overflow: hidden;
+        }
+        
+        .grid-item-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .grid-item-full {
+            grid-column: span 2;
+            aspect-ratio: 4 / 3;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        body.dark-theme .grid-item-full {
+            background-color: rgba(28, 28, 30, 0.4);
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .carousel-item.active {
+            opacity: 1;
+        }
+
+        .carousel-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .carousel-nav { display: none; }
+
+        .icon-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            z-index: 10;
+        }
+
+        .icon-row .icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-theme .icon-row .icon {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+    </style>
+</head>
+<body>
+
+    <input type="file" id="bgfileinput" accept="image/*" style="display: none;">
+    
+    <div class="container">
+        <div class="icon-row">
+            <div class="icon" id="changebgimage"><span class="icon-placeholder">🖼️</span></div>
+            <div class="icon" id="themetoggle"><span class="icon-placeholder">☀️</span></div>
+        </div>
+
+        <div class="header">
+            <div class="avatar">
+                <img id="avatarimage" src="Image_1762298308048.jpg" alt="头像" title="布乖furry的头像">
+            </div>
+            <div class="info">
+                <h1>布乖Furry</h1>
+                <p>你好，我是一名热爱分享兽圈文化与创意短视频的创作者</p>
+            </div>
+        </div>
+
+        <div class="tags">
+            <div class="tag">兽圈视频创作者</div>
+            <div class="tag">剪辑与设计获奖者</div>
+        </div>
+
+        <form action="https://www.bing.com/search" method="get" class="search-form">
+            <div class="search-box">
+                <span class="icon-placeholder">🔍</span>
+                <input type="text" name="q" placeholder="请输入文本搜索...">
+            </div>
+        </form>
+
+        <div class="content-grid">
+            
+            <div class="grid-item">
+                <a href="https://new.502fakw.com/shop/dh7lclbo" target="_blank">
+                    <div class="grid-item-image">
+                        <img src="https://i.postimg.cc/wvVBmpPt/536-536.gif">
+                    </div>
+                    <div class="grid-item-content">布乖店铺</div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="https://www.common-link.com" target="_blank">
+                    <div class="grid-item-image">
+                        <img src="https://i.postimg.cc/QCwKHSLN/511-511.gif">
+                    </div>
+                    <div class="grid-item-content">关注我们</div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="https://www.common-link.com" target="_blank">
+                    <div class="grid-item-image">
+                        <img src="https://via.placeholder.com/60x60/98fb98/000000?text=link">
+                    </div>
+                    <div class="grid-item-content">纯文本 3</div>
+                </a>
+            </div>
+            
+            <div class="grid-item">
+                <a href="http://slither.io/" target="_blank">
+                    <div class="grid-item-image">
+                        <img src="https://i.postimg.cc/kXW4dWM6/IMG-20251129-145759.png">
+                    </div>
+                    <div class="grid-item-content">游戏</div>
+                </a>
+            </div>
+            
+            <div class="grid-item-full" id="imageCarousel">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <img src="https://i.postimg.cc/t48TWDgJ/20251129-075548.jpg">
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="https://pbs.twimg.com/media/GHXf216bMAAzF-U?format=jpg&name=small">
+                    </div>
+                    
+                    <div class="carousel-item">
+                        <img src="https://via.placeholder.com/600x450/20b2aa/000000?text=Image+3+(PNG)">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+  
+    <script>
+        const body = document.body;
+        const themetoggle = document.getElementById('themetoggle');
+        const changebgimage = document.getElementById('changebgimage');
+        const avatarimage = document.getElementById('avatarimage');
+        const bgfileinput = document.getElementById('bgfileinput'); 
+        const carousel = document.getElementById('imageCarousel');
+        let carouselItems = [];
+        let slideIndex = 0;
+        let slideInterval;
+        
+        /* 头像轮播列表 —— 已改为你的本地文件名 */
+        const avatarImages = [
+            'Image_1762298308048.jpg',
+            'https://via.placeholder.com/70x70/ffc0cb/000000?text=puppy',
+            'https://via.placeholder.com/70x70/add8e6/000000?text=kitten',
+            'https://via.placeholder.com/70x70/90ee90/000000?text=fox',
+            'https://via.placeholder.com/70x70/ffa07a/000000?text=tiger',
+        ];
+        let currentAvatarIndex = 0;
+
+        themetoggle.addEventListener('click', () => {
+            body.classList.toggle('dark-theme');
+            themetoggle.querySelector('.icon-placeholder').textContent =
+                body.classList.contains('dark-theme') ? '🌙' : '☀️';
+        });
+
+        changebgimage.addEventListener('click', () => bgfileinput.click());
+
+        bgfileinput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    body.style.backgroundImage = `url('${e.target.result}')`;
+                };
+                reader.readAsDataURL(file);
+            }
+            event.target.value = null;
+        });
+
+        avatarimage.addEventListener('click', () => {
+            currentAvatarIndex = (currentAvatarIndex + 1) % avatarImages.length;
+            avatarimage.src = avatarImages[currentAvatarIndex];
+        });
+        
+        function showSlides() {
+            if (carouselItems.length === 0 && carousel) {
+                carouselItems = carousel.querySelectorAll('.carousel-item');
+                if (carouselItems.length === 0) return;
+            }
+
+            carouselItems.forEach(item => item.classList.remove('active'));
+            
+            if (slideIndex >= carouselItems.length) slideIndex = 0;
+
+            carouselItems[slideIndex].classList.add('active');
+            slideIndex++;
+        }
+
+        if (carousel) {
+            showSlides();
+            slideInterval = setInterval(showSlides, 3000);
+        }
+        
+    </script>
+
+</body>
+</html>
